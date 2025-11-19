@@ -21,10 +21,10 @@ public class InventoryServiceApplication {
 
         return args -> {
         	productRepository.save(Product.builder()
-					.id(UUID.randomUUID().toString()).name("computer").price(122)
+					.name("computer").price(122)
 					.quantity(22).build());
 			productRepository.save(Product.builder()
-					.id(UUID.randomUUID().toString()).name("printer").price(333)
+					.name("printer").price(333)
 					.quantity(19).build());
         };
     }

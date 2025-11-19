@@ -6,12 +6,13 @@ import com.tp.bilingservice.feign.ProductRestClient;
 import com.tp.bilingservice.repository.BillRepository;
 import com.tp.bilingservice.repository.ProductItemRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/api")
 public class BillRestController {
 
     private BillRepository billRepository;
@@ -19,8 +20,12 @@ public class BillRestController {
     private ProductRestClient productRestClient;
     private CustomerRestClient customerRestClient;
 
+    @GetMapping("/bills")
+    public List<Bill> getBills(){
+        return billRepository.findAll();
+    }
 
-    @GetMapping("api/bills/{id}")
+    @GetMapping("/bills/{id}")
     public Bill getBill(@PathVariable Long id){
         Bill bill = billRepository.findById(id).get();
         bill.setCustomer(customerRestClient.getCustomerById(bill.getCustomerId()));
@@ -29,5 +34,15 @@ public class BillRestController {
         });
         return bill;
 
+    }
+
+    @PostMapping("/bills")
+    public Bill createBill(@RequestBody Bill bill){
+        return billRepository.save(bill);
+    }
+
+    @DeleteMapping("/bills/{id}")
+    public void deleteBill(@PathVariable Long id){
+        billRepository.deleteById(id);
     }
 }

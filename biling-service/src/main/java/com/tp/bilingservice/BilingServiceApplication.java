@@ -33,8 +33,8 @@ public class BilingServiceApplication {
         return args -> {
 
 
-            Collection<Customer> customers = customerRestClient.getAllCustomers().getContent();
-            Collection<Product> products = productRestClient.getAllProducts().getContent();
+            List<Customer> customers = customerRestClient.getAllCustomers();
+            List<Product> products = productRestClient.getAllProducts();
             customers.forEach(customer -> {
                 Bill bill = Bill.builder()
                         .customerId(customer.getId())
