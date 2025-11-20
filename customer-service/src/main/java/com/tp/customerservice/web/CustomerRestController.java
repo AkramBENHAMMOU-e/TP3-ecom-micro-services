@@ -1,9 +1,12 @@
 package com.tp.customerservice.web;
 
+import com.tp.customerservice.dtos.CustomerRequestDto;
+import com.tp.customerservice.dtos.CustomerResponseDto;
 import com.tp.customerservice.entities.Customer;
 import com.tp.customerservice.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,16 +19,16 @@ public class CustomerRestController {
     }
 
     @GetMapping("/customers")
-    public List<Customer> getCustomers(){
+    public List<CustomerResponseDto> getCustomers(){
         return customerService.getAllCustomers();
     }
     @GetMapping("/customers/{id}")
-    public Customer getCustomerById(@PathVariable Long id){
+    public CustomerResponseDto getCustomerById(@PathVariable Long id){
         return customerService.getCustomerById(id);
 
     }
     @GetMapping("/customer")
-    public Customer getCustomerByNameAndEmail(
+    public CustomerResponseDto getCustomerByNameAndEmail(
             @RequestParam String name,
             @RequestParam String email) {
 
@@ -34,7 +37,7 @@ public class CustomerRestController {
     }
 
     @PostMapping("/customers")
-    public Customer createCustomer(@RequestBody Customer customer){
+    public CustomerResponseDto createCustomer(@Valid @RequestBody CustomerRequestDto customer){
         return customerService.createCustomer(customer);
     }
 
@@ -44,8 +47,7 @@ public class CustomerRestController {
     }
 
     @PutMapping("/customers/{id}")
-    public Customer updateCustomer(@PathVariable Long id,@RequestBody Customer customer){
-        customer.setId(id);
-        return customerService.updateCustomer(customer);
+    public CustomerResponseDto updateCustomer(@PathVariable Long id,@Valid @RequestBody CustomerRequestDto customer){
+        return customerService.updateCustomer(id,customer);
     }
 }

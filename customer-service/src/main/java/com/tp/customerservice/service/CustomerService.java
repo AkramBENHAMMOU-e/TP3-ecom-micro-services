@@ -1,14 +1,16 @@
 package com.tp.customerservice.service;
 
+import com.tp.customerservice.dtos.CustomerRequestDto;
+import com.tp.customerservice.dtos.CustomerResponseDto;
 import com.tp.customerservice.entities.Customer;
 
 import java.util.List;
 
 public interface CustomerService {
-    public List<Customer> getAllCustomers();
-    public Customer getCustomerById(Long id);
-    public Customer createCustomer(Customer customer);
+    public List<CustomerResponseDto> getAllCustomers();
+    public CustomerResponseDto getCustomerById(Long id);
+    public CustomerResponseDto createCustomer(CustomerRequestDto customerRequestDto);
     public void deleteCustomer(Long id);
-    public Customer updateCustomer(Customer customer);
-    public Customer getCustomerByNameAndEmail(String name, String email);
+    public CustomerResponseDto updateCustomer( Long id , CustomerRequestDto customerRequestDto);
+    public CustomerResponseDto getCustomerByNameAndEmail(String name, String email);
 }
