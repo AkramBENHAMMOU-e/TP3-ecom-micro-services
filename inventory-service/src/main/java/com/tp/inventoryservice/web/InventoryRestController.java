@@ -1,9 +1,13 @@
 package com.tp.inventoryservice.web;
 
+import com.tp.inventoryservice.dtos.ProductRequestDto;
+import com.tp.inventoryservice.dtos.ProductResponseDto;
 import com.tp.inventoryservice.entities.Product;
 import com.tp.inventoryservice.repository.ProductRepository;
+import com.tp.inventoryservice.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,41 +15,35 @@ import java.util.UUID;
 @RequestMapping("/products")
 public class InventoryRestController {
 
-    private ProductRepository productRepository;
-    public InventoryRestController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    private final ProductService productService;
+    public InventoryRestController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping()
-    public List<Product> getAllProducts(){
-        return productRepository.findAll();
+    public List<ProductResponseDto> getAllProducts(){
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable UUID id){
-        return productRepository.findById(id).get();
+    public ProductResponseDto getProductById(@PathVariable UUID id){
+        return productService.getProductById(id);
     }
 
     @PostMapping()
-    public Product addProduct(@RequestBody Product product){
-        return productRepository.save(product);
+    public ProductResponseDto addProduct(@Valid @RequestBody ProductRequestDto product){
+        return productService.saveProduct(product);
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable UUID id, @RequestBody Product product){
-        Product p = productRepository.findById(id).get();
-        p.setName(product.getName());
-        p.setPrice(product.getPrice());
-        p.setName(product.getName());
-        p.setQuantity(product.getQuantity());
-        return productRepository.save(p);
+    public ProductResponseDto updateProduct(@PathVariable UUID id,@Valid @RequestBody ProductRequestDto product){
+       return productService.updateProduct(id,product);
     }
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable UUID id){
-        productRepository.deleteById(id);
+        productService.deleteProductById(id);
     }
-
 
 
 }
